@@ -4,7 +4,12 @@ section .data
     ; zde budou vase data
 
 section .text
+
 ; __cdecl double calcExpr(double x, double y)
+; Výstup:
+;   ST0 = +Inf <=> A >= 0 && B == 0 (tedy čitatel >= 0 a jmenovatel == 0)
+;   ST0 = -Inf <=> A < 0 && B == 0 (tedy čitatel <  0 a jmenovatel == 0)
+;   ST0 = f(x,y) v ostatních případech
 calcExpr:
     push ebp
     mov ebp, esp
@@ -54,7 +59,7 @@ calcExpr:
 
     ; ve jmenovateli je nula, zjistím znaménko čitatele
     ; popnu B
-    fstp st0, st0       ;    A    |
+    fstp st0            ;    A    |
     fldz ; nahraju nulu ;    0    |    A    |
     fcompp ; porovnání s nulou a pop obou => prázdné FPU
     fstsw ax
